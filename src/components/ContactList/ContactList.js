@@ -1,8 +1,14 @@
-import PropTypes from 'prop-types';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import s from './ContactList.module.css';
 import { FaRegTimesCircle } from 'react-icons/fa';
+import { deleteContacts } from '../../redux/contacts/contacts-action';
+import { filteredContacts } from '../../redux/contacts/contacts-selector';
 
-function ContactList({ contacts, onDeleteContacts }) {
+const ContactList = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(filteredContacts);
+
   return (
     <>
       <ul className={s.list}>
@@ -14,7 +20,7 @@ function ContactList({ contacts, onDeleteContacts }) {
             <button
               className={s.btn}
               type="button"
-              onClick={() => onDeleteContacts(id)}
+              onClick={() => dispatch(deleteContacts(id))}
             >
               <FaRegTimesCircle className={s.icon} />
             </button>
@@ -23,17 +29,6 @@ function ContactList({ contacts, onDeleteContacts }) {
       </ul>
     </>
   );
-}
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    }),
-  ),
-  onDeleteContacts: PropTypes.func.isRequired,
 };
 
 export default ContactList;
